@@ -1,0 +1,274 @@
+--------------------------------------------------------------------------------
+                    Phoenix Engine Programming Style Guide
+--------------------------------------------------------------------------------
+
+  This document describes the coding style used throughout the Phoenix core
+  implementation files. Developers are expected to adhere to this style, within
+  a reasonable margin of error, so as to maintain a clean and coherent codebase.
+
+--- Philosophy -----------------------------------------------------------------
+
+  + Consistent, Clean, Concise
+  + Error-checking only where genuinely valuable -- do not check the return
+    value of malloc :)
+  + Extremely lightweight headers; absolute minimal exposure of implementation
+    via headers
+  + Opaque pointers & hidden implementation for all but the most trivial objects
+  + Performance always kept in mind, but never allowed to cause clutter or bloat
+    unless *PROVEN* to provide significant gain
+  + Solve concrete problems, not imaginary sets of them. Good architecture
+    maximizes the (real_use_cases_solved / code_complexity) ratio.
+  + Shoot yourself in the foot, learn from it, then get better at aiming :)
+  + No cleverness, no cuteness, no bullshit. Just simplicity.
+
+--- General --------------------------------------------------------------------
+
+  Observe the following example of PHX style:
+
+    int myFn (int x, int y) {
+      int z = 0;
+      for (int i = 0; i < x; ++i)
+        z += i;
+      for (int i = 0; i < y; ++i) {
+        int q = i * i;
+        q *= y;
+        if (q % 3 == 0)
+          z += q;
+      }
+    }
+
+  Notice that we:
+    - (Usually) omit braces for single-statement bodies of loops or conditionals
+      *unless* said omission would cause ambiguity
+    - Place the opening brace on the same line as the scope that opens it.
+    - Place the closing brace on its own line
+    - Use pre-increments (++i) when the return value is not used (i.e., in
+      almost every situation). This is simply a matter of communicating
+      intention.
+
+--- 2-space Indentation --------------------------------------------------------
+
+  Self-explanatory. We use two spaces as our indents. Make sure your editor is
+  set accordingly (and make *sure* that it does not emit actual tabs).
+
+--- Header / Source Conventions ------------------------------------------------
+
+  In almost every case, functionality is implemented via a <Type>.h, <Type>.cpp
+  pair. <Type>.h goes in include/ , <Type>.cpp goes in src/. Headers are
+  absolutely minimal, providing only the public API of Type and exposing as
+  little implementation detail as possible. Public API functions are prefixed
+  with PHX_API. Internal functions that must be exposed to other compilation
+  units via the header are marked with PRIVATE, and will NOT be exported. Do
+  not use PRIVATE functions in engine code unless you know exactly what you are
+  doing.
+
+  Functions and implementation-specifics are always hidden in the implementation
+  file whenever possible. 'Leaky abstractions' are kept to a bare-minimum.
+
+  Helper functions should always be marked static. Inline helper functions
+  should be marked 'inline static', not 'static inline'.
+
+--- Header / Source Whitespace -------------------------------------------------
+
+  In headers, function names should be vertically aligned as well as the
+  opening parentheses for function arguments. There should be 2 spaces between
+  the longest return type and the function name and 2 spaces between the longest
+  function name and the opening parenthesis.
+
+    PHX_API void*   Bytes_GetData     (Bytes*);
+    PHX_API uint32  Bytes_GetSize     (Bytes*);
+
+    PHX_API Bytes*  Bytes_Compress    (Bytes*);
+    PHX_API Bytes*  Bytes_Decompress  (Bytes*);
+
+  This spacing and alignment makes headers trivial to visually parse. Combined
+  with our philosophy of minimizing implementation exposure in headers, the
+  result is an exceptionally-easy-to-grok engine API.
+
+  In source, there should be 1 space after the function name and before the
+  opening parenthesis. Do not align in source files.
+
+    void* Bytes_GetData (Bytes* self) {
+    }
+
+--- 'Member Function' Naming ---------------------------------------------------
+
+  We do not have member functions in C. However, we maintain a clean naming
+  scheme to distinguish C-style 'member' functions from free functions not
+  associated with a type. We use the name of the type, followed by an
+  underscore, followed by the name of the function. Member functions should
+  always have a pointer to the associated type as their first argument.
+
+    <Type>_<FunctionName>(Type*, [other params])
+
+  Examples:
+
+    Gamepad_GetName(Gamepad*);
+    File_WriteInt(File*, int);
+    Mesh_GetCenter(Mesh*);
+
+--- Singletons / Static Modules ------------------------------------------------
+
+  For static APIs (i.e., not based around instances of a type), we use the
+  exact same style as above, except of course that functions will have no Type*
+  parameter.
+
+    PHX_API void    Engine_Abort   ();
+    PHX_API int     Engine_GetBits ();
+    PHX_API double  Engine_GetTime ();
+
+--- Create/Destroy, Init/Free --------------------------------------------------
+
+  Functions that initialize or free objects have the following format:
+  
+    PHX_API Type* <Type>_Create  ([...])
+    PHX_API void  <Type>_Destroy (Type*);
+
+  Functions that initialize or free static modules have the following format:
+  
+    PHX_API void  <Module>_Init  ([...])
+    PHX_API void  <Module>_Free  ();
+
+  This naming convention is enforced as a matter of convenience.
+
+--- Include Guards -------------------------------------------------------------
+
+  All header files use a standard C include guard of the form:
+
+    #ifndef PHX_[filename without extension]
+    #define PHX_[filename without extension]
+
+    [header contents]
+
+    #endif
+
+  Example:
+
+    #ifndef PHX_RenderQueue
+    #define PHX_RenderQueue
+
+    ...
+
+    #endif
+
+  We do not use #pragma once.
+
+--- Brace & Indent Omission for Trivial Nested Loops ---------------------------
+
+  The following is acceptable and encouraged:
+
+    for (int z = 0; z < zMax; ++z)
+    for (int y = 0; y < yMax; ++y)
+    for (int x = 0; x < xMax; ++x) {
+      /* Do something. */
+    }
+
+  It is compact, easy-to-read, and expresses the idea that the inner body is
+  the body of a trivial triple-loop. Of course, this only works if the
+  innermost loop is the only place that logic is required. If outer loops
+  require logic we must use braces and will, therefore, indent accordingly.
+
+--- Explicit Typedefs instead of Enums -----------------------------------------
+
+  Enums provide little benefit; we use explicit typedefs instead. Doing so
+  allows us to specify the precise width of our enumerated type, and prevents
+  us from having to cast to get the integer value of an enumerated element.
+
+  We do, however, lose typechecking. It requires minimal effort to avoid making
+  enum-interchanging errors. Just pay attention, and don't get cute with enums
+  and integers.
+
+  We also lose the standard end-element 'SIZE' paradigm to automatically compute
+  the number of enumerated values. If your situation requires iterating over
+  enum elems, use the X macro pattern or define a SIZE element explicitly.
+
+    ENUM_T typedef int32 TexFormat;
+
+    PHX_API const TexFormat TexFormat_R8;
+    PHX_API const TexFormat TexFormat_R16;
+    ...
+    PHX_API const TexFormat TexFormat_RGBA16F;
+    PHX_API const TexFormat TexFormat_RGBA32F;
+
+    PHX_API int   TexFormat_Components  (TexFormat);
+    PHX_API int   TexFormat_GetSize     (TexFormat);
+
+--- Type Aliases ---------------------------------------------------------------
+
+  The PHX common header defines several convenient aliases for standard types.
+  The PHX alias is indicated on the left, the corresponding standard type on
+  the right, and a description in parens. We always use the PHX alias (on the
+  left).
+
+    ulong   ->  unsigned long
+    ushort  ->  unsigned short
+    uchar   ->  unsigned char
+    cstr    ->  char const*       (C-style null-terminated string)
+
+    int8    ->  int8_t            ( 8-bit signed integer)
+    int16   ->  int16_t           (16-bit signed integer)
+    int32   ->  int32_t           (32-bit signed integer)
+    int64   ->  int64_t           (64-bit signed integer)
+
+    uint8   ->  uint8_t           ( 8-bit unsigned integer)
+    uint16  ->  uint16_t          (16-bit unsigned integer)
+    uint32  ->  uint32_t          (32-bit unsigned integer)
+    uint64  ->  uint64_t          (64-bit unsigned integer)
+
+  Perhaps the most important of these is cstr, a very common type (and quite
+  a bit shorter than typing the equivalent char const*).
+
+--- Prefer Plain (Signed) Int --------------------------------------------------
+
+  We prefer to use plain (signed) ints for non-enum integer types, regardless
+  of whether the particular variable should be constrained to non-negative
+  values.
+
+  While this convention sacrifices a tiny bit of expressivity, it increases
+  clarity, reduces hidden cast operations, and reduces the volume of
+  'signed/unsigned mismatch' compiler warnings. In addition, it decreases the
+  opportunity for subtle overflow errors.
+
+--- MyType const*, not const MyType* -------------------------------------------
+
+  Although we do not frequently worry ourselves with constness, it is sometimes
+  desirable to communicate intention (it does not help compiler optimization,
+  contrary to what one might naively expect).
+
+  When doing so, we always use infix placement for the qualifier, meaning:
+
+    (1) char const*
+           NOT
+    (2) const char*
+
+  Although (2) is vastly more popular (especially amongst C++ programmers), it
+  is, in fact, less clear and is only a 'syntactic (anti)sugar' for the former!
+  The compiler reads type qualifiers from **right-to-left**, hence, Mesh const*
+  is read as 'pointer to a constant Mesh.' The issue with (2) becomes clear when
+  qualifiers are not so simple:
+
+    (1) Mesh const* const
+    (2) const Mesh* const
+
+  Now we see that the former reads sensibly in the eyes of the compiler:
+    'constant pointer to a constant Mesh'
+
+  The latter, although still equivalent, reads 'constant pointer to a Mesh
+  constant.' There is now a disturbing asymmetry between the former constness
+  being 'prefix' and the latter being 'postfix.' No such asymmetry occurs when
+  we write in style 1.
+
+  Far more complex scenarios that demonstrate the definitive superiority of (1)
+  can be found with a quick web search (of course, we don't like complex
+  scenarios in Phoenix ;) )
+
+--- for (;;) instead of while (true) -------------------------------------------
+
+  The former is the good-practice way to indicate an infinite loop. It also
+  informs the compiler explicitly of your intentions, suppressing the constant
+  conditional expression warning.
+
+  Infinite loops are not good practice in the first place. Use a more expressive
+  loop construct when possible.
+
+--------------------------------------------------------------------------------

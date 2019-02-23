@@ -1,0 +1,107 @@
+================================================================================
+   LuaJIT Performance Notes
+================================================================================
+
+  - Keeping lookups local or upvalue instead of global is important. Different
+    bytecode is emitted depending on how tightly the compiler can identify the
+    scope of a lookup.  Need to be MUCH more careful about global namespace
+    polution.
+
+    UPDATE 11.28.17 :
+
+      It is now known that this is false for LuaJIT. In LJ, it may actually
+      be counter-productive, since the generated assembly will need to place
+      a guard at each table lookup. If a symbol is fully-unrolled into _G,
+      that's just one guard. Namespaces incur an additional guard for each
+      level of nesting (I *believe* this is the correct analysis, but a more
+      rigorous proof is needed; difficult simply because of how hard it is
+      to read the generated assembly..). Either way, perf impact has been shown
+      to be imperceptible. OTOH, code clarity goes way up.
+
+      We must still keep an eye on this, but the above advice is questionable
+      at best.
+
+  - Even for small functions like Vec3 math, C calls seem to (fairly
+    dramatically) outperform the JIT.  Be wary of 'just write it in Lua,' this
+    advice is shoddy at best.
+      ! Be careful. This strongly depends on whether a trace gets JITed or not.
+        It seems that C calls may outperform in the event of an interpreter
+        fallback, BUT may underperform in the event that the trace is
+        successfully JITed. This makes sense.
+
+      UPDATE 11.28.17 :
+        The ! is correct. Traced 'simple' operations will outperform ffi calls.
+        However, ffi calls from the interpreter may be 'an order of magnitude'
+        slower than calls to standard Lua_CFunctions (!!) (source: Mike Pall).
+        So one must be *very* careful with usage of ffi in hot loops that may
+        fall back.
+
+  - Remember than LJ is a *tracing* JIT.  That means functions *aren't*
+    necessarily converted to assembly.  Only *traces* are converted, and traces
+    don't necessarily align with function boundaries.  This can work magic, or
+    it can do nothing (because if we're not running in a trace, we're basically
+    just running in the plain-old Lua interpreter).  It's worth playing around
+    with the JIT optimization configuration.
+
+      UPDATE 11.28.17 :
+        Yes, but worth noting that the LJ interpreter is blazing fast compared
+        to standard Lua interpreter. The *major* exception, regrettably, is
+        ffi calls, as noted above.
+
+  . Still unclear on the penalty of data martialling.  For example, whether
+    typedef struct { void* p; } Mesh; incurs significant overhead compared to
+    typedef void* Mesh. If it does, I need to be more careful
+      > Yes, it incurs major overhead. But the overhead is really due to the
+        fact that this WILL cause a trace abort. LuaJIT will not be able to
+        invoke the given function using native calling convention.
+
+      UPDATE 11.28.17 :
+        Incorrect. The overhead I was seeing was due to incorrectly marking
+        the cdefs with, e.g., Mesh_Fn(Mesh, ..) instead of Mesh_Fn(Mesh*, ..).
+        The former aborts, the latter generates optimal assembly. This has
+        been known for a long time now and all of the bindings are created
+        with this in mind.
+
+  ? In a tight loop, is it better to incur the memory alloc cost of using Vecs
+    in order to gain the C vector math speed, or better to just hand-unroll the
+    math component-by-component?
+
+      UPDATE 11.28.17 :
+        Use Vecs. But worry about whether the allocation escapes the trace
+        erroneously. If it does not, as it shouldn't for simple operations,
+        LJ sinks it and no alloc ever occurs. Unrolling can actually make
+        register coalescing more difficult for LJ due to increased number of
+        locals in the trace / snapshots. Additionally, if unrolling vector
+        math really makes something faster, that something needs to be in C.
+
+  . Speaking of which, can access be sped up be using indices for Vecs instead
+    of .x, .y, .z?  At the bytecode level this is still a table lookup...but
+    at the JIT level perhaps it costs nothing.
+      > Unlikely to gain anything here. The table lookups are very, very fast
+        under LJ, *especially* if the trace succeeds.
+
+      UPDATE 11.28.17 :
+        No, nothing is gained when Vecs are correctly defined through ffi.cdef.
+        They are converted to native field access (obviously, since they are
+        cdata, it could not be any other way).
+
+  - FP32 <-> FP64 martialling is indeed expensive. Simple Vec3d vs Vec3f
+    tests showed floats taking twice as long
+
+      UPDATE 11.28.17 :
+        Still a rather poorly-investigated problem. Unlikely to be a bottleneck.
+        Again, if this is a bottleneck, the routine doing the calls should
+        probably be in C.
+
+  ~ Need to investigate using intrinsics for manual SSE in core math libs
+
+  ! Whether or not GC is turned on does make a difference in profiles.  Without
+    GC on, LJ can perform on par with C on a good day.  The penalty seems to
+    grow non-trivially (~20%+) with GC on.
+
+      UPDATE 11.28.17 :
+        We have shown that this is highly-dependent on allocation rate (duh).
+        Zero allocation means zero penalty. We must simply keep per-frame
+        allocation to a minimum. Additionally, schemes that change the GC
+        behavior seem to have highly-inconsistent perf impact accross different
+        arch/OSs. Do not rely on them being a win.

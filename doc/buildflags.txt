@@ -1,0 +1,38 @@
+--------------------------------------------------------------------------------
+                      Phoenix Engine Build Flags
+--------------------------------------------------------------------------------
+
+x86_32 specific:
+  /arch:SSE2
+  (x86_64 has this by default)
+
+  /EHs-c-                   Disables exception handling
+  /fp:fast                  Prefer fast over conformant FP math
+  /GL                       Whole-Program Optimization
+  /GS-                      Disable Buffer Security Checks
+  /GR-                      Disable RTTI
+  /O2                       Fast Code
+  /MT                       Static C Runtime, LIBCMT.lib
+  /MP                       Multithreaded build
+  /FC                       Full file paths in diagnostics
+  /Zi                       Create PDB
+  
+  /LTCG                     Link time code generation
+  /OPT:REF                  Eliminate Dead Code
+  /OPT:ICF                  COMDAT Section Folding
+
+  /Wall                     Enable All Warnings
+  /wd4061                   Enum value not explicitly handled in switch
+  /wd4100                   Unreferenced formal parameter
+  /wd4191                   Unsafe conversion
+  /wd4365                   Signed / unsigned mismatch
+  /wd4459                   Local declaration hides global declaration
+  /wd4505                   Unreferenced local function removed
+  /wd4514                   Unreferenced inline function removed
+  /wd4668                   Not defined as macro, replacing with zero
+  /wd4710                   Function not inlined
+  /wd4711                   Function selected for inline expansion
+  /wd4820                   Padding added after data member
+  /wd4987                   Nonstandard extension used
+
+--------------------------------------------------------------------------------

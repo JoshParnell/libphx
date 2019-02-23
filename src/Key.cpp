@@ -1,0 +1,125 @@
+#include "Key.h"
+#include "SDL.h"
+
+const Key Key_A           = SDL_SCANCODE_A;
+const Key Key_B           = SDL_SCANCODE_B;
+const Key Key_C           = SDL_SCANCODE_C;
+const Key Key_D           = SDL_SCANCODE_D;
+const Key Key_E           = SDL_SCANCODE_E;
+const Key Key_F           = SDL_SCANCODE_F;
+const Key Key_G           = SDL_SCANCODE_G;
+const Key Key_H           = SDL_SCANCODE_H;
+const Key Key_I           = SDL_SCANCODE_I;
+const Key Key_J           = SDL_SCANCODE_J;
+const Key Key_K           = SDL_SCANCODE_K;
+const Key Key_L           = SDL_SCANCODE_L;
+const Key Key_M           = SDL_SCANCODE_M;
+const Key Key_N           = SDL_SCANCODE_N;
+const Key Key_O           = SDL_SCANCODE_O;
+const Key Key_P           = SDL_SCANCODE_P;
+const Key Key_Q           = SDL_SCANCODE_Q;
+const Key Key_R           = SDL_SCANCODE_R;
+const Key Key_S           = SDL_SCANCODE_S;
+const Key Key_T           = SDL_SCANCODE_T;
+const Key Key_U           = SDL_SCANCODE_U;
+const Key Key_V           = SDL_SCANCODE_V;
+const Key Key_W           = SDL_SCANCODE_W;
+const Key Key_X           = SDL_SCANCODE_X;
+const Key Key_Y           = SDL_SCANCODE_Y;
+const Key Key_Z           = SDL_SCANCODE_Z;
+
+const Key Key_N0          = SDL_SCANCODE_0;
+const Key Key_N1          = SDL_SCANCODE_1;
+const Key Key_N2          = SDL_SCANCODE_2;
+const Key Key_N3          = SDL_SCANCODE_3;
+const Key Key_N4          = SDL_SCANCODE_4;
+const Key Key_N5          = SDL_SCANCODE_5;
+const Key Key_N6          = SDL_SCANCODE_6;
+const Key Key_N7          = SDL_SCANCODE_7;
+const Key Key_N8          = SDL_SCANCODE_8;
+const Key Key_N9          = SDL_SCANCODE_9;
+
+const Key Key_F1          = SDL_SCANCODE_F1;
+const Key Key_F2          = SDL_SCANCODE_F2;
+const Key Key_F3          = SDL_SCANCODE_F3;
+const Key Key_F4          = SDL_SCANCODE_F4;
+const Key Key_F5          = SDL_SCANCODE_F5;
+const Key Key_F6          = SDL_SCANCODE_F6;
+const Key Key_F7          = SDL_SCANCODE_F7;
+const Key Key_F8          = SDL_SCANCODE_F8;
+const Key Key_F9          = SDL_SCANCODE_F9;
+const Key Key_F10         = SDL_SCANCODE_F10;
+const Key Key_F11         = SDL_SCANCODE_F11;
+const Key Key_F12         = SDL_SCANCODE_F12;
+const Key Key_F13         = SDL_SCANCODE_F13;
+const Key Key_F14         = SDL_SCANCODE_F14;
+const Key Key_F15         = SDL_SCANCODE_F15;
+const Key Key_F16         = SDL_SCANCODE_F16;
+const Key Key_F17         = SDL_SCANCODE_F17;
+const Key Key_F18         = SDL_SCANCODE_F18;
+const Key Key_F19         = SDL_SCANCODE_F19;
+const Key Key_F20         = SDL_SCANCODE_F20;
+const Key Key_F21         = SDL_SCANCODE_F21;
+const Key Key_F22         = SDL_SCANCODE_F22;
+const Key Key_F23         = SDL_SCANCODE_F23;
+const Key Key_F24         = SDL_SCANCODE_F24;
+
+const Key Key_KP0         = SDL_SCANCODE_KP_0;
+const Key Key_KP1         = SDL_SCANCODE_KP_1;
+const Key Key_KP2         = SDL_SCANCODE_KP_2;
+const Key Key_KP3         = SDL_SCANCODE_KP_3;
+const Key Key_KP4         = SDL_SCANCODE_KP_4;
+const Key Key_KP5         = SDL_SCANCODE_KP_5;
+const Key Key_KP6         = SDL_SCANCODE_KP_6;
+const Key Key_KP7         = SDL_SCANCODE_KP_7;
+const Key Key_KP8         = SDL_SCANCODE_KP_8;
+const Key Key_KP9         = SDL_SCANCODE_KP_9;
+
+const Key Key_KPNumLock   = SDL_SCANCODE_NUMLOCKCLEAR;
+const Key Key_KPDivide    = SDL_SCANCODE_KP_DIVIDE;
+const Key Key_KPMultiply  = SDL_SCANCODE_KP_MULTIPLY;
+const Key Key_KPSubtract  = SDL_SCANCODE_KP_MINUS;
+const Key Key_KPAdd       = SDL_SCANCODE_KP_PLUS;
+const Key Key_KPEnter     = SDL_SCANCODE_KP_ENTER;
+const Key Key_KPDecimal   = SDL_SCANCODE_KP_DECIMAL;
+
+const Key Key_Backspace   = SDL_SCANCODE_BACKSPACE;
+const Key Key_Escape      = SDL_SCANCODE_ESCAPE;
+const Key Key_Return      = SDL_SCANCODE_RETURN;
+const Key Key_Space       = SDL_SCANCODE_SPACE;
+const Key Key_Tab         = SDL_SCANCODE_TAB;
+const Key Key_Backtick    = SDL_SCANCODE_GRAVE;
+const Key Key_CapsLock    = SDL_SCANCODE_CAPSLOCK;
+
+const Key Key_Minus       = SDL_SCANCODE_MINUS;
+const Key Key_Equals      = SDL_SCANCODE_EQUALS;
+const Key Key_LBracket    = SDL_SCANCODE_LEFTBRACKET;
+const Key Key_RBracket    = SDL_SCANCODE_RIGHTBRACKET;
+const Key Key_Backslash   = SDL_SCANCODE_BACKSLASH;
+const Key Key_Semicolon   = SDL_SCANCODE_SEMICOLON;
+const Key Key_Apostrophe  = SDL_SCANCODE_APOSTROPHE;
+const Key Key_Comma       = SDL_SCANCODE_COMMA;
+const Key Key_Period      = SDL_SCANCODE_PERIOD;
+const Key Key_Slash       = SDL_SCANCODE_SLASH;
+
+const Key Key_PrintScreen = SDL_SCANCODE_PRINTSCREEN;
+const Key Key_ScrollLock  = SDL_SCANCODE_SCROLLLOCK;
+const Key Key_Pause       = SDL_SCANCODE_PAUSE;
+const Key Key_Insert      = SDL_SCANCODE_INSERT;
+const Key Key_Home        = SDL_SCANCODE_HOME;
+const Key Key_PageUp      = SDL_SCANCODE_PAGEUP;
+const Key Key_PageDown    = SDL_SCANCODE_PAGEDOWN;
+const Key Key_Delete      = SDL_SCANCODE_DELETE;
+const Key Key_Right       = SDL_SCANCODE_RIGHT;
+const Key Key_Left        = SDL_SCANCODE_LEFT;
+const Key Key_Down        = SDL_SCANCODE_DOWN;
+const Key Key_Up          = SDL_SCANCODE_UP;
+
+const Key Key_LCtrl       = SDL_SCANCODE_LCTRL;
+const Key Key_LShift      = SDL_SCANCODE_LSHIFT;
+const Key Key_LAlt        = SDL_SCANCODE_LALT;
+const Key Key_LMeta       = SDL_SCANCODE_LGUI;
+const Key Key_RCtrl       = SDL_SCANCODE_RCTRL;
+const Key Key_RShift      = SDL_SCANCODE_RSHIFT;
+const Key Key_RAlt        = SDL_SCANCODE_RALT;
+const Key Key_RMeta       = SDL_SCANCODE_RGUI;
