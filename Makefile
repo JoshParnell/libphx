@@ -35,6 +35,7 @@ CFLAGS += -DDEBUG=0
 CFLAGS += -g
 CFLAGS += -Iinclude/
 CFLAGS += -Iext/
+CFLAGS += -Iext/bullet/
 CFLAGS += -std=c++11
 CFLAGS += -Wno-unused-variable
 CFLAGS += -Wno-unknown-pragmas

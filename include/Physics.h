@@ -26,8 +26,6 @@
  *
  * -------------------------------------------------------------------------- */
 
-#if 0
-
 struct Collision {
   int        index;
   int        count;
@@ -71,5 +69,4 @@ PHX_API void      Physics_DrawWireframes          (Physics*);
 
 PRIVATE void  Physics_FlushCachedRigidBodyData  (Physics*, RigidBody*);
 
-#endif
 #endif
