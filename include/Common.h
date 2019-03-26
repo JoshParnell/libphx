@@ -88,13 +88,9 @@
   OPAQUE_T Directory;
   OPAQUE_T File;
   OPAQUE_T Font;
-  OPAQUE_T GameObject;
-  OPAQUE_T GameObjectType;
-  OPAQUE_T GameWorld;
   OPAQUE_T HashGrid;
   OPAQUE_T HashGridElem;
   OPAQUE_T HashMap;
-  OPAQUE_T Icon;
   OPAQUE_T InputBinding;
   OPAQUE_T KDTree;
   OPAQUE_T LodMesh;
@@ -104,7 +100,6 @@
   OPAQUE_T MidiDevice;
   OPAQUE_T Octree;
   OPAQUE_T Physics;
-  OPAQUE_T Renderer;
   OPAQUE_T RigidBody;
   OPAQUE_T RmGui;
   OPAQUE_T RNG;
@@ -125,7 +120,6 @@
   OPAQUE_T ThreadPool;
   OPAQUE_T Timer;
   OPAQUE_T Trigger;
-  OPAQUE_T Widget;
   OPAQUE_T Window;
 
 /* --- Transparent Structs -------------------------------------------------- */

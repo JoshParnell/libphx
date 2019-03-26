@@ -1,4 +1,3 @@
-#include "Cache.h"
 #include "Directory.h"
 #include "Engine.h"
 #include "Gamepad.h"
@@ -80,7 +79,6 @@ void Engine_Init (int glVersionMajor, int glVersionMinor) {
   SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
   SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
 
-  Cache_Init();
   Keyboard_Init();
   Metric_Reset();
   Mouse_Init();

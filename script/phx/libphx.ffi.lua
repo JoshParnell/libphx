@@ -63,52 +63,46 @@ end
 
 do -- Opaque Structs
   ffi.cdef [[
-    typedef struct BSP            {} BSP;
-    typedef struct BoxMesh        {} BoxMesh;
-    typedef struct BoxTree        {} BoxTree;
-    typedef struct Bytes          {} Bytes;
-    typedef struct Directory      {} Directory;
-    typedef struct File           {} File;
-    typedef struct Font           {} Font;
-    typedef struct GameObject     {} GameObject;
-    typedef struct GameObjectType {} GameObjectType;
-    typedef struct GameWorld      {} GameWorld;
-    typedef struct HashGrid       {} HashGrid;
-    typedef struct HashGridElem   {} HashGridElem;
-    typedef struct HashMap        {} HashMap;
-    typedef struct Icon           {} Icon;
-    typedef struct InputBinding   {} InputBinding;
-    typedef struct KDTree         {} KDTree;
-    typedef struct LodMesh        {} LodMesh;
-    typedef struct MemPool        {} MemPool;
-    typedef struct MemStack       {} MemStack;
-    typedef struct Mesh           {} Mesh;
-    typedef struct MidiDevice     {} MidiDevice;
-    typedef struct Octree         {} Octree;
-    typedef struct Physics        {} Physics;
-    typedef struct RNG            {} RNG;
-    typedef struct Renderer       {} Renderer;
-    typedef struct RigidBody      {} RigidBody;
-    typedef struct RmGui          {} RmGui;
-    typedef struct SDF            {} SDF;
-    typedef struct Shader         {} Shader;
-    typedef struct ShaderState    {} ShaderState;
-    typedef struct Socket         {} Socket;
-    typedef struct Sound          {} Sound;
-    typedef struct SoundDesc      {} SoundDesc;
-    typedef struct StrBuffer      {} StrBuffer;
-    typedef struct StrMap         {} StrMap;
-    typedef struct StrMapIter     {} StrMapIter;
-    typedef struct Tex1D          {} Tex1D;
-    typedef struct Tex2D          {} Tex2D;
-    typedef struct Tex3D          {} Tex3D;
-    typedef struct TexCube        {} TexCube;
-    typedef struct Thread         {} Thread;
-    typedef struct ThreadPool     {} ThreadPool;
-    typedef struct Timer          {} Timer;
-    typedef struct Trigger        {} Trigger;
-    typedef struct Widget         {} Widget;
-    typedef struct Window         {} Window;
+    typedef struct BSP          {} BSP;
+    typedef struct BoxMesh      {} BoxMesh;
+    typedef struct BoxTree      {} BoxTree;
+    typedef struct Bytes        {} Bytes;
+    typedef struct Directory    {} Directory;
+    typedef struct File         {} File;
+    typedef struct Font         {} Font;
+    typedef struct HashGrid     {} HashGrid;
+    typedef struct HashGridElem {} HashGridElem;
+    typedef struct HashMap      {} HashMap;
+    typedef struct InputBinding {} InputBinding;
+    typedef struct KDTree       {} KDTree;
+    typedef struct LodMesh      {} LodMesh;
+    typedef struct MemPool      {} MemPool;
+    typedef struct MemStack     {} MemStack;
+    typedef struct Mesh         {} Mesh;
+    typedef struct MidiDevice   {} MidiDevice;
+    typedef struct Octree       {} Octree;
+    typedef struct Physics      {} Physics;
+    typedef struct RNG          {} RNG;
+    typedef struct RigidBody    {} RigidBody;
+    typedef struct RmGui        {} RmGui;
+    typedef struct SDF          {} SDF;
+    typedef struct Shader       {} Shader;
+    typedef struct ShaderState  {} ShaderState;
+    typedef struct Socket       {} Socket;
+    typedef struct Sound        {} Sound;
+    typedef struct SoundDesc    {} SoundDesc;
+    typedef struct StrBuffer    {} StrBuffer;
+    typedef struct StrMap       {} StrMap;
+    typedef struct StrMapIter   {} StrMapIter;
+    typedef struct Tex1D        {} Tex1D;
+    typedef struct Tex2D        {} Tex2D;
+    typedef struct Tex3D        {} Tex3D;
+    typedef struct TexCube      {} TexCube;
+    typedef struct Thread       {} Thread;
+    typedef struct ThreadPool   {} ThreadPool;
+    typedef struct Timer        {} Timer;
+    typedef struct Trigger      {} Trigger;
+    typedef struct Window       {} Window;
   ]]
 
   libphx.Opaques = {
@@ -119,13 +113,9 @@ do -- Opaque Structs
     'Directory',
     'File',
     'Font',
-    'GameObject',
-    'GameObjectType',
-    'GameWorld',
     'HashGrid',
     'HashGridElem',
     'HashMap',
-    'Icon',
     'InputBinding',
     'KDTree',
     'LodMesh',
@@ -136,7 +126,6 @@ do -- Opaque Structs
     'Octree',
     'Physics',
     'RNG',
-    'Renderer',
     'RigidBody',
     'RmGui',
     'SDF',
@@ -156,7 +145,6 @@ do -- Opaque Structs
     'ThreadPool',
     'Timer',
     'Trigger',
-    'Widget',
     'Window',
   }
 end
