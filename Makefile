@@ -49,16 +49,19 @@ LFLAGS += -shared
 all: $(OUTPATH)
 	@echo Build complete.
 
+bindings:
+	luajit ./tool/genffi.lua include $(PROJECT) ./script
+
 clean:
 	rm -f $(OUTPATH)
 	rm -rf $(OBJPATH)
 
-install: $(OUTPATH)
-	luajit ../tool/genffi.lua include $(PROJECT) ../script
-	cp $(OUTPATH) /usr/local/lib/$(OUTFILE)
-	rm -rf ../ext/include/$(PROJECT)
-	cp -r include ../ext/include/$(PROJECT)
-	ldconfig
+#install: $(OUTPATH)
+#  luajit ../tool/genffi.lua include $(PROJECT) ../script
+#  cp $(OUTPATH) /usr/local/lib/$(OUTFILE)
+#  rm -rf ../ext/include/$(PROJECT)
+#  cp -r include ../ext/include/$(PROJECT)
+#  ldconfig
 
 $(OUTPATH): $(OBJECTS)
 	@echo [LINK] $(OUTPATH)
