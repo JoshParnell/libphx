@@ -8,8 +8,8 @@ PROJECT := libphx
 
 SRCPATH := src
 OUTFILE := $(PROJECT)64.so
-OBJPATH = ~/.build/$(PROJECT)/obj
-OUTPATH = ~/.build/$(PROJECT)/$(OUTFILE)
+OBJPATH = ./obj
+OUTPATH = ./bin/$(OUTFILE)
 
 SOURCES := $(shell find $(SRCPATH)/ -type f -name '*.cpp')
 OBJECTS := $(patsubst $(SRCPATH)/%.cpp, $(OBJPATH)/%.o, $(SOURCES))
