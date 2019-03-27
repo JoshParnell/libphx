@@ -23,6 +23,8 @@ LIBS += -lluajit-5.1
 LIBS += -llz4
 LIBS += -lfmod
 LIBS += -lfmodstudio
+LIBS += -lBulletCollision
+LIBS += -lBulletDynamics
 LIBS += `sdl2-config --libs`
 
 CFLAGS = `sdl2-config --cflags`
@@ -50,18 +52,18 @@ all: $(OUTPATH)
 	@echo Build complete.
 
 bindings:
-	luajit ./tool/genffi.lua include $(PROJECT) ./script
 
 clean:
 	rm -f $(OUTPATH)
 	rm -rf $(OBJPATH)
 
-#install: $(OUTPATH)
-#  luajit ../tool/genffi.lua include $(PROJECT) ../script
-#  cp $(OUTPATH) /usr/local/lib/$(OUTFILE)
-#  rm -rf ../ext/include/$(PROJECT)
-#  cp -r include ../ext/include/$(PROJECT)
-#  ldconfig
+install: $(OUTPATH)
+	luajit ./tool/genffi.lua include $(PROJECT) ./script
+	sudo cp $(OUTPATH) /usr/local/lib/$(OUTFILE)
+	sudo ldconfig
+
+run:
+	./bin/luajit ./script/app/HelloWorld.lua
 
 $(OUTPATH): $(OBJECTS)
 	@echo [LINK] $(OUTPATH)

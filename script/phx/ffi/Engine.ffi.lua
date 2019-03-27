@@ -9,6 +9,7 @@ do -- C Definitions
     void   Engine_Abort         ();
     int    Engine_GetBits       ();
     double Engine_GetTime       ();
+    cstr   Engine_GetVersion    ();
     bool   Engine_IsInitialized ();
     void   Engine_Terminate     ();
     void   Engine_Update        ();
@@ -22,6 +23,7 @@ do -- Global Symbol Table
     Abort         = libphx.Engine_Abort,
     GetBits       = libphx.Engine_GetBits,
     GetTime       = libphx.Engine_GetTime,
+    GetVersion    = libphx.Engine_GetVersion,
     IsInitialized = libphx.Engine_IsInitialized,
     Terminate     = libphx.Engine_Terminate,
     Update        = libphx.Engine_Update,

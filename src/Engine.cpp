@@ -33,6 +33,7 @@ const uint32 subsystems =
   SDL_INIT_JOYSTICK |
   SDL_INIT_GAMECONTROLLER;
 
+static cstr versionString = __DATE__ " " __TIME__;
 static TimeStamp initTime = 0;
 
 void Engine_Init (int glVersionMajor, int glVersionMinor) {
@@ -108,6 +109,10 @@ int Engine_GetBits () {
 
 double Engine_GetTime () {
   return TimeStamp_GetElapsed(initTime);
+}
+
+cstr Engine_GetVersion () {
+  return versionString;
 }
 
 bool Engine_IsInitialized () {
