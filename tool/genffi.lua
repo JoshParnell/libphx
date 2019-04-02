@@ -5,8 +5,7 @@ local LIBNAME = arg[2]
 local OUTPATH = arg[3]
 local VERBOSE = arg[4]
 
-local SHORTNAME = LIBNAME:gsub('^lib', '')
-OUTPATH = OUTPATH..'/'..SHORTNAME
+OUTPATH = OUTPATH .. '/' .. LIBNAME
 
 local insert = table.insert
 local remove = table.remove
@@ -384,12 +383,13 @@ end
 
 local function writeBindingsScope (scope)
   logf('Generating FFI bindings for %s...', scope.name)
-  local file = io.open(format('%s/ffi/%s.ffi.lua', OUTPATH, scope.name), 'wb')
+  local file = io.open(format('%s/%s.lua', OUTPATH, scope.name), 'wb')
   assert(file)
 
   local lines = {}
   appendf(lines, [[-- %s %s]], scope.name, string.rep('-', 76 - #scope.name))
   appendf(lines, "local ffi = require('ffi')")
+  appendf(lines, "local libphx = require('libphx.libphx')")
   appendf(lines, 'local %s\n', scope.name)
 
   do -- ffi cdefs
@@ -525,16 +525,16 @@ local function writeBindingsScope (scope)
 end
 
 local function writeBindingsInit ()
-  local path = format('%s/%s.ffi.lua', OUTPATH, LIBNAME)
+  local path = format('%s/%s.lua', OUTPATH, LIBNAME)
   local file = io.open(path, 'wb')
   if not file then errorf('Failed to open <%s> for writing', path) end
 
   local lines = {}
   appendf(lines, "local ffi = require('ffi')")
   appendf(lines, "local jit = require('jit')\n")
-  appendf(lines, "local %s = {}\n", LIBNAME)
+  appendf(lines, "local %s", LIBNAME)
 
-  do -- typedefs
+  do -- Typedefs
     appendf(lines, 'do -- Basic Typedefs')
     appendf(lines, '  ffi.cdef [[')
     for _, typedef in ipairs(typedefs) do
@@ -545,7 +545,7 @@ local function writeBindingsInit ()
     appendf(lines, 'end\n')
   end
 
-  do -- function pointers
+  do -- Function Pointers
     appendf(lines, 'do -- Function Pointer Typedefs')
     appendf(lines, '  ffi.cdef [[')
     for _, fPtr in ipairs(funcPtrs) do
@@ -556,7 +556,7 @@ local function writeBindingsInit ()
     appendf(lines, 'end\n')
   end
 
-  do -- opaque structs
+  do -- Opaques
     appendf(lines, 'do -- Opaque Structs')
     appendf(lines, '  ffi.cdef [[')
     for _, opaque in ipairs(opaques) do
@@ -565,15 +565,17 @@ local function writeBindingsInit ()
     end
     appendf(lines, '  ]]\n')
 
-    appendf(lines, '  %s.Opaques = {', LIBNAME)
-    for _, opaque in ipairs(opaques) do
-      appendf(lines, "    '%s',", opaque)
+    if false then -- Opaque List
+      appendf(lines, '  %s.Opaques = {', LIBNAME)
+      for _, opaque in ipairs(opaques) do
+        appendf(lines, "    '%s',", opaque)
+      end
+      appendf(lines, '  }')
     end
-    appendf(lines, '  }')
     appendf(lines, 'end\n')
   end
 
-  do -- transparent structs
+  do -- Transparents
     appendf(lines, 'do -- Transparent Structs')
     appendf(lines, '  ffi.cdef [[')
     for i, struct in ipairs(structs) do
@@ -589,13 +591,16 @@ local function writeBindingsInit ()
     end
     appendf(lines, '  ]]\n')
 
-    appendf(lines, '  %s.Structs = {', LIBNAME)
-    for _, struct in ipairs(structs) do
-      if isstruct[struct.name] then
-        appendf(lines, "    '%s',", struct.name)
+    if false then -- Transparent List
+      appendf(lines, '  %s.Structs = {', LIBNAME)
+      for _, struct in ipairs(structs) do
+        if isstruct[struct.name] then
+          appendf(lines, "    '%s',", struct.name)
+        end
       end
+      appendf(lines, '  }')
     end
-    appendf(lines, '  }')
+
     appendf(lines, 'end\n')
   end
 
@@ -604,9 +609,9 @@ local function writeBindingsInit ()
     appendf(lines, "  local debug = __debug__ and 'd' or ''")
     appendf(lines, "  local arch = jit.arch == 'x86' and '32' or '64'")
     appendf(lines, "  local path = string.format('%s%%s%%s', arch, debug)", LIBNAME)
-    appendf(lines, '  %s.lib = ffi.load(path, false)', LIBNAME)
-    appendf(lines, "  assert(%s.lib, 'Failed to load %%s', path)", LIBNAME)
-    appendf(lines, '  _G.%s = %s.lib', LIBNAME, LIBNAME)
+    appendf(lines, '  %s = ffi.load(path, false)', LIBNAME)
+    appendf(lines, "  assert(%s, 'Failed to load %%s', path)", LIBNAME)
+    -- appendf(lines, '  _G.%s = %s.lib', LIBNAME, LIBNAME)
     appendf(lines, 'end\n')
   end
 
@@ -623,7 +628,7 @@ local function emptyDir (path)
     while true do
       local fileName = iter(dirObj)
       if not fileName then break end
-      if fileName:match('%.ffi%.lua$') then
+      if fileName:match('%.lua$') then
         os.remove(path..'/'..fileName)
       end
     end
@@ -632,8 +637,7 @@ end
 
 local function writeBindings ()
   lfs.mkdir(OUTPATH)
-  lfs.mkdir(OUTPATH..'/ffi')
-  emptyDir(OUTPATH..'/ffi')
+  emptyDir(OUTPATH)
   table.sort(scopes, function (a, b) return a.name < b.name end)
   table.sort(opaques)
   writeBindingsInit()
