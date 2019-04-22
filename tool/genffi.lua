@@ -5,8 +5,6 @@ local LIBNAME = arg[2]
 local OUTPATH = arg[3]
 local VERBOSE = arg[4]
 
-OUTPATH = OUTPATH .. '/' .. LIBNAME
-
 local insert = table.insert
 local remove = table.remove
 local join   = table.concat
@@ -389,7 +387,7 @@ local function writeBindingsScope (scope)
   local lines = {}
   appendf(lines, [[-- %s %s]], scope.name, string.rep('-', 76 - #scope.name))
   appendf(lines, "local ffi = require('ffi')")
-  appendf(lines, "local libphx = require('libphx.libphx')")
+  appendf(lines, "local %s = require('ffi.%s')", LIBNAME, LIBNAME)
   appendf(lines, 'local %s\n', scope.name)
 
   do -- ffi cdefs

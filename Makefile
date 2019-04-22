@@ -49,24 +49,25 @@ LFLAGS += -L/usr/local/lib
 LFLAGS += -rdynamic
 LFLAGS += -shared
 
-all: $(OUTPATH)
+.PHONY: all bindings clean install test
+
+all: $(OUTPATH) bindings
 	@echo Build complete.
 
-bindings:
-	luajit ./tool/genffi.lua include $(PROJECT) ./script
+bindings: $(OUTPATH)
+	luajit ./tool/genffi.lua include $(PROJECT) ./script/ffi
 
 clean:
 	rm -f $(OUTPATH)
 	rm -rf $(OBJPATH)
 	rm -rf log
 
-install: $(OUTPATH)
-	luajit ./tool/genffi.lua include $(PROJECT) ./script
+install: all
 	sudo cp $(OUTPATH) /usr/local/lib/$(OUTFILE)
 	sudo ldconfig
 
-run:
-	@./bin/luajit ./script/app/HelloWorld.lua
+test:
+	@./bin/luajit ./script/test/TestInit.lua
 
 $(OUTPATH): $(OBJECTS)
 	@mkdir -p $(OUTDIR)
