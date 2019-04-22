@@ -57,6 +57,7 @@ bindings:
 clean:
 	rm -f $(OUTPATH)
 	rm -rf $(OBJPATH)
+	rm -rf log
 
 install: $(OUTPATH)
 	luajit ./tool/genffi.lua include $(PROJECT) ./script

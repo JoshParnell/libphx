@@ -1,2 +1,3 @@
 bin/libphx*.so
 obj/
+log/
