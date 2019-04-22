@@ -7,9 +7,10 @@ LINK := clang++
 PROJECT := libphx
 
 SRCPATH := src
+OBJPATH := ./obj
+OUTDIR	:= ./bin
 OUTFILE := $(PROJECT)64.so
-OBJPATH = ./obj
-OUTPATH = ./bin/$(OUTFILE)
+OUTPATH := $(OUTDIR)/$(OUTFILE)
 
 SOURCES := $(shell find $(SRCPATH)/ -type f -name '*.cpp')
 OBJECTS := $(patsubst $(SRCPATH)/%.cpp, $(OBJPATH)/%.o, $(SOURCES))
@@ -68,6 +69,7 @@ run:
 	@./bin/luajit ./script/app/HelloWorld.lua
 
 $(OUTPATH): $(OBJECTS)
+	@mkdir -p $(OUTDIR)
 	@echo [LINK] $(OUTPATH)
 	@$(LINK) -o $(OUTPATH) $(OBJECTS) $(CFLAGS) $(LFLAGS) $(LIBS)
 
