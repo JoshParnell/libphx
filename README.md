@@ -7,3 +7,28 @@ Rather than acting as a framework like most modern game engines, the LibPHX phil
 ### Supported Platforms
   - Windows
   - Linux
+
+### Contents
+
+      > bin
+            Default output directory for compiled LibPHX shared library
+      > doc
+      > ext
+            3rd-party header files for libraries used by LibPHX
+      > include
+            LibPHX header files
+      > script
+          > ffi
+                Automatically-generated Lua bindings for enabling use of LibPHX
+                data structures and functions via the LuaJIT foreign-function
+                interface (ffi)
+          > ffiext
+                Manual modifications & additions to the ffi bindings that
+                provide convenience and extra functionality
+          > test
+                Basic Lua tests of LibPHX functionality
+      > src
+            LibPHX source files
+      > tool
+            Tools related to the build process
+
