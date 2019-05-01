@@ -21,7 +21,7 @@
 #endif
 
 #if WINDOWS
-  #if BUILDING_libphx
+  #if LIBPHX_BUILDING
     #define PHX_API           extern "C" __declspec(dllexport)
   #else
     #define PHX_API           extern "C" __declspec(dllimport)

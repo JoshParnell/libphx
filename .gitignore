@@ -1,3 +1,5 @@
+.vs/
 bin/libphx*.so
+build/
 obj/
 log/
