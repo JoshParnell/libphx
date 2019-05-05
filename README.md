@@ -14,7 +14,10 @@ Rather than acting as a framework like most modern game engines, the LibPHX phil
             Default output directory for compiled LibPHX shared library
       > doc
       > ext
-            3rd-party header files for libraries used by LibPHX
+          > include
+                Header files for 3rd-party libraries used by LibPHX
+          > lib
+                Pre-compiled binary files for 3rd-party libraries used by LibPHX
       > include
             LibPHX header files
       > script
