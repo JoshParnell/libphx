@@ -20,6 +20,17 @@ elseif (UNIX)
   endif ()
 endif ()
 
+set (CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/bin")
+set (CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/bin")
+set (CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/bin")
+
+foreach (config ${CMAKE_CONFIGURATION_TYPES})
+    string (TOUPPER ${config} config)
+    set (CMAKE_RUNTIME_OUTPUT_DIRECTORY_${config} "${CMAKE_SOURCE_DIR}/bin")
+    set (CMAKE_LIBRARY_OUTPUT_DIRECTORY_${config} "${CMAKE_SOURCE_DIR}/bin")
+    set (CMAKE_ARCHIVE_OUTPUT_DIRECTORY_${config} "${CMAKE_SOURCE_DIR}/bin")
+endforeach (config)
+
 file (GLOB HEADERS "include/*.h")
 file (GLOB SOURCES "src/*.cpp")
 
@@ -27,14 +38,16 @@ add_library (phx SHARED ${SOURCES} ${HEADERS})
 
 target_compile_definitions (phx PRIVATE LIBPHX_BUILDING=1)
 
-set_target_properties(phx PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/bin")
-set_target_properties(phx PROPERTIES LIBRARY_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/bin")
-set_target_properties(phx PROPERTIES ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/bin")
-
 if ("${CMAKE_SIZEOF_VOID_P}" EQUAL "4")
-  set_target_properties(phx PROPERTIES OUTPUT_NAME "phx32")
+  set_target_properties(phx PROPERTIES OUTPUT_NAME_DEBUG "phx32d")
+  set_target_properties(phx PROPERTIES OUTPUT_NAME_RELEASE "phx32r")
+  set_target_properties(phx PROPERTIES OUTPUT_NAME_RELWITHDEBINFO "phx32")
+  set_target_properties(phx PROPERTIES OUTPUT_NAME_MINSIZEREL "phx32rm")
 else ()
-  set_target_properties(phx PROPERTIES OUTPUT_NAME "phx64")
+  set_target_properties(phx PROPERTIES OUTPUT_NAME_DEBUG "phx64d")
+  set_target_properties(phx PROPERTIES OUTPUT_NAME_RELEASE "phx64r")
+  set_target_properties(phx PROPERTIES OUTPUT_NAME_RELWITHDEBINFO "phx64")
+  set_target_properties(phx PROPERTIES OUTPUT_NAME_MINSIZEREL "phx64rm")
 endif ()
 
 if (WIN32)
