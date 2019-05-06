@@ -67,7 +67,7 @@ install: all
 	sudo ldconfig
 
 test:
-	@./bin/luajit ./script/test/TestInit.lua
+	@./ext/bin/linux64/luajit ./script/test/TestInit.lua
 
 $(OUTPATH): $(OBJECTS)
 	@mkdir -p $(OUTDIR)
