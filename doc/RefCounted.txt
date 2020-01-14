@@ -23,7 +23,7 @@
 
   There is an explicit *_Acquire method for all RefCounted objects. If an object
   in PHX has an *_Acquire method, then it is reference-counted and users must
-  objey the rules below.
+  obey the rules below.
 
 --- Rules for Using Reference-Counted Objects ----------------------------------
 

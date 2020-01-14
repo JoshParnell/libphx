@@ -16,7 +16,7 @@ x86_32 specific:
   /MP                       Multithreaded build
   /FC                       Full file paths in diagnostics
   /Zi                       Create PDB
-  
+
   /LTCG                     Link time code generation
   /OPT:REF                  Eliminate Dead Code
   /OPT:ICF                  COMDAT Section Folding

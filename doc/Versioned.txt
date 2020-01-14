@@ -61,7 +61,7 @@
        function calls made within said path are not allowed to modify the
        object!)
 
-    -> DO NOT serialized or otherwise make use of versions beyond the scope of
+    -> DO NOT serialize or otherwise make use of versions beyond the scope of
        a single PHX engine execution. Versions are relative to execution and
        are NOT intended to work beyond said scope.
 

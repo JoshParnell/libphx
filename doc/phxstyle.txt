@@ -120,12 +120,12 @@
 --- Create/Destroy, Init/Free --------------------------------------------------
 
   Functions that initialize or free objects have the following format:
-  
+
     PHX_API Type* <Type>_Create  ([...])
     PHX_API void  <Type>_Destroy (Type*);
 
   Functions that initialize or free static modules have the following format:
-  
+
     PHX_API void  <Module>_Init  ([...])
     PHX_API void  <Module>_Free  ();
 
