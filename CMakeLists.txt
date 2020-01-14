@@ -2,54 +2,56 @@ cmake_minimum_required (VERSION 3.0.2)
 project (LibPHX)
 set (CMAKE_BUILD_TYPE Release)
 
-include_directories(include)
-include_directories(ext/include)
-include_directories(ext/include/bullet)
+include_directories (include)
+include_directories (ext/include)
+include_directories (ext/include/bullet)
 
-if(WIN32)
-  set(PLATFORM "win")
-elseif(LINUX)
-  set(PLATFORM "linux")
-else()
-  message(FATAL_ERROR "Unsupported Platform")
-endif()
+if (WIN32)
+  set (PLATFORM "win")
+  set (WINDOWS TRUE)
+elseif (UNIX AND NOT APPLE)
+  set (PLATFORM "linux")
+  set (LINUX TRUE)
+else ()
+  message (FATAL_ERROR "Unsupported Platform")
+endif ()
 
-if("${CMAKE_SIZEOF_VOID_P}" EQUAL "4")
-  set(ARCH "32")
-elseif("${CMAKE_SIZEOF_VOID_P}" EQUAL "8")
-  set(ARCH "64")
-else()
-  message(FATAL_ERROR "Unsupported CPU Architecture")
-endif()
+if ("${CMAKE_SIZEOF_VOID_P}" EQUAL "4")
+  set (ARCH "32")
+elseif ("${CMAKE_SIZEOF_VOID_P}" EQUAL "8")
+  set (ARCH "64")
+else ()
+  message (FATAL_ERROR "Unsupported CPU Architecture")
+endif ()
 
-set(PLATARCH "${PLATFORM}${ARCH}")
+set (PLATARCH "${PLATFORM}${ARCH}")
 
-link_directories("ext/lib/${PLATARCH}")
+link_directories ("ext/lib/${PLATARCH}")
 
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/bin/${PLATARCH}")
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/bin/${PLATARCH}")
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/bin/${PLATARCH}")
+set (CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/bin/${PLATARCH}")
+set (CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/bin/${PLATARCH}")
+set (CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/bin/${PLATARCH}")
 
-foreach(config ${CMAKE_CONFIGURATION_TYPES})
-    string(TOUPPER ${config} config)
-    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_${config} "${CMAKE_SOURCE_DIR}/bin/${PLATARCH}")
-    set(CMAKE_LIBRARY_OUTPUT_DIRECTORY_${config} "${CMAKE_SOURCE_DIR}/bin/${PLATARCH}")
-    set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_${config} "${CMAKE_SOURCE_DIR}/bin/${PLATARCH}")
-endforeach(config)
+foreach (config ${CMAKE_CONFIGURATION_TYPES})
+    string (TOUPPER ${config} config)
+    set (CMAKE_RUNTIME_OUTPUT_DIRECTORY_${config} "${CMAKE_SOURCE_DIR}/bin/${PLATARCH}")
+    set (CMAKE_LIBRARY_OUTPUT_DIRECTORY_${config} "${CMAKE_SOURCE_DIR}/bin/${PLATARCH}")
+    set (CMAKE_ARCHIVE_OUTPUT_DIRECTORY_${config} "${CMAKE_SOURCE_DIR}/bin/${PLATARCH}")
+endforeach (config)
 
-file(GLOB HEADERS "include/*.h")
-file(GLOB SOURCES "src/*.cpp")
+file (GLOB HEADERS "include/*.h")
+file (GLOB SOURCES "src/*.cpp")
 
-add_library(phx SHARED ${SOURCES} ${HEADERS})
+add_library (phx SHARED ${SOURCES} ${HEADERS})
 
-target_compile_definitions(phx PRIVATE LIBPHX_BUILDING=1)
+target_compile_definitions (phx PRIVATE LIBPHX_BUILDING=1)
 
-set_target_properties(phx PROPERTIES OUTPUT_NAME_DEBUG "phx${ARCH}d")
-set_target_properties(phx PROPERTIES OUTPUT_NAME_RELEASE "phx${ARCH}r")
-set_target_properties(phx PROPERTIES OUTPUT_NAME_RELWITHDEBINFO "phx${ARCH}")
-set_target_properties(phx PROPERTIES OUTPUT_NAME_MINSIZEREL "phx${ARCH}rm")
+set_target_properties (phx PROPERTIES OUTPUT_NAME_DEBUG "phx${ARCH}d")
+set_target_properties (phx PROPERTIES OUTPUT_NAME_RELEASE "phx${ARCH}r")
+set_target_properties (phx PROPERTIES OUTPUT_NAME_RELWITHDEBINFO "phx${ARCH}")
+set_target_properties (phx PROPERTIES OUTPUT_NAME_MINSIZEREL "phx${ARCH}rm")
 
-if(WIN32)
+if (WINDOWS)
   target_link_libraries (phx
     opengl32.lib
     glew32.lib
@@ -59,23 +61,25 @@ if(WIN32)
     freetype.lib
     lua51.lib)
 
-  target_link_libraries(phx fmodL_vc.lib fmodstudioL_vc.lib)
-  target_link_libraries(phx BulletCollision.lib BulletDynamics.lib LinearMath.lib)
+  target_link_libraries (phx fmodL_vc.lib fmodstudioL_vc.lib)
+  target_link_libraries (phx BulletCollision.lib BulletDynamics.lib LinearMath.lib)
 
-  target_compile_definitions(phx PRIVATE _CRT_SECURE_NO_DEPRECATE)
-  target_compile_definitions(phx PRIVATE WIN32_LEAN_AND_MEAN)
-  target_compile_definitions(phx PRIVATE WINDOWS=1)
+  target_compile_definitions (phx PRIVATE _CRT_SECURE_NO_DEPRECATE)
+  target_compile_definitions (phx PRIVATE WIN32_LEAN_AND_MEAN)
+  target_compile_definitions (phx PRIVATE WINDOWS=1)
 
-  target_compile_options(phx PRIVATE "/MP")         # Multithreaded Build
-  target_compile_options(phx PRIVATE "/MD")         # Dynamic C Runtime
-  target_compile_options(phx PRIVATE "/EHs-c-")     # No exception handling
-  target_compile_options(phx PRIVATE "/fp:fast")    # No strict FP
-  target_compile_options(phx PRIVATE "/GL")         # Whole Program Optimization
-  target_compile_options(phx PRIVATE "/GS-")        # No Buffer Security Checks
-  target_compile_options(phx PRIVATE "/GR-")        # No RTTI
-  target_compile_options(phx PRIVATE "/arch:SSE2")  # Assume SSE2+
-elseif(LINUX)
-  target_link_libraries(phx
+  target_compile_options (phx PRIVATE "/MP")         # Multithreaded Build
+  target_compile_options (phx PRIVATE "/MD")         # Dynamic C Runtime
+  target_compile_options (phx PRIVATE "/EHs-c-")     # No exception handling
+  target_compile_options (phx PRIVATE "/fp:fast")    # No strict FP
+  target_compile_options (phx PRIVATE "/GL")         # Whole Program Optimization
+  target_compile_options (phx PRIVATE "/GS-")        # No Buffer Security Checks
+  target_compile_options (phx PRIVATE "/GR-")        # No RTTI
+  target_compile_options (phx PRIVATE "/arch:SSE2")  # Assume SSE2+
+
+elseif (LINUX)
+
+  target_link_libraries (phx
     GL
     GLEW
     dl
@@ -86,23 +90,24 @@ elseif(LINUX)
     fmod fmodstudio
     BulletCollision BulletDynamics)
 
-  target_compile_definitions(phx PRIVATE UNIX=1)
+  target_compile_definitions (phx PRIVATE UNIX=1)
 
-  target_compile_options(phx PRIVATE "-Wall")            # All error checking
-  target_compile_options(phx PRIVATE "-fno-exceptions")  # No exception handling
-  target_compile_options(phx PRIVATE "-ffast-math")      # No strict FP
-  target_compile_options(phx PRIVATE "-fpic")            # PIC since this is shared
+  target_compile_options (phx PRIVATE "-Wall")            # All error checking
+  target_compile_options (phx PRIVATE "-fno-exceptions")  # No exception handling
+  target_compile_options (phx PRIVATE "-ffast-math")      # No strict FP
+  target_compile_options (phx PRIVATE "-fpic")            # PIC since this is shared
 
-  target_compile_options(phx PRIVATE "-Wno-unused-variable")
-  target_compile_options(phx PRIVATE "-Wno-unknown-pragmas")
+  target_compile_options (phx PRIVATE "-Wno-unused-variable")
+  target_compile_options (phx PRIVATE "-Wno-unknown-pragmas")
 
   # Aggressive optimization, assuming SSE4+
-  target_compile_options(phx PRIVATE "-O3")
-  target_compile_options(phx PRIVATE "-msse")
-  target_compile_options(phx PRIVATE "-msse2")
-  target_compile_options(phx PRIVATE "-msse3")
-  target_compile_options(phx PRIVATE "-msse4")
+  target_compile_options (phx PRIVATE "-O3")
+  target_compile_options (phx PRIVATE "-msse")
+  target_compile_options (phx PRIVATE "-msse2")
+  target_compile_options (phx PRIVATE "-msse3")
+  target_compile_options (phx PRIVATE "-msse4")
 
   # :(
-  target_compile_options(phx PRIVATE "-std=c++11")
+  target_compile_options (phx PRIVATE "-std=c++11")
+
 endif ()
