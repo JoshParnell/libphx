@@ -110,4 +110,7 @@ elseif (LINUX)
   # :(
   target_compile_options (phx PRIVATE "-std=c++11")
 
+  # Add ext/lib/{$PLATARCH} to runtime library search path
+  target_link_options (phx PRIVATE "-Wl,-rpath,../ext/lib/${PLATARCH}")
+
 endif ()
