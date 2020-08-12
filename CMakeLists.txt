@@ -2,10 +2,6 @@ cmake_minimum_required (VERSION 3.0.2)
 project (LibPHX)
 set (CMAKE_BUILD_TYPE Release)
 
-include_directories (include)
-include_directories (ext/include)
-include_directories (ext/include/bullet)
-
 if (WIN32)
   set (PLATFORM "win")
   set (WINDOWS TRUE)
@@ -25,6 +21,12 @@ else ()
 endif ()
 
 set (PLATARCH "${PLATFORM}${ARCH}")
+
+# ------------------------------------------------------------------------------
+
+include_directories (include)
+include_directories (ext/include)
+include_directories (ext/include/bullet)
 
 link_directories ("ext/lib/${PLATARCH}")
 
@@ -50,6 +52,8 @@ set_target_properties (phx PROPERTIES OUTPUT_NAME_DEBUG "phx${ARCH}d")
 set_target_properties (phx PROPERTIES OUTPUT_NAME_RELEASE "phx${ARCH}r")
 set_target_properties (phx PROPERTIES OUTPUT_NAME_RELWITHDEBINFO "phx${ARCH}")
 set_target_properties (phx PROPERTIES OUTPUT_NAME_MINSIZEREL "phx${ARCH}rm")
+
+# ------------------------------------------------------------------------------
 
 if (WINDOWS)
   target_link_libraries (phx
