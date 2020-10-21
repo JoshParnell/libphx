@@ -24,21 +24,15 @@ set (PLATARCH "${PLATFORM}${ARCH}")
 
 # ------------------------------------------------------------------------------
 
-include_directories (include)
-include_directories (ext/include)
-include_directories (ext/include/bullet)
-
-link_directories ("ext/lib/${PLATARCH}")
-
 set (CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/bin/${PLATARCH}")
 set (CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/bin/${PLATARCH}")
 set (CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/bin/${PLATARCH}")
 
 foreach (config ${CMAKE_CONFIGURATION_TYPES})
-    string (TOUPPER ${config} config)
-    set (CMAKE_RUNTIME_OUTPUT_DIRECTORY_${config} "${CMAKE_SOURCE_DIR}/bin/${PLATARCH}")
-    set (CMAKE_LIBRARY_OUTPUT_DIRECTORY_${config} "${CMAKE_SOURCE_DIR}/bin/${PLATARCH}")
-    set (CMAKE_ARCHIVE_OUTPUT_DIRECTORY_${config} "${CMAKE_SOURCE_DIR}/bin/${PLATARCH}")
+  string (TOUPPER ${config} config)
+  set (CMAKE_RUNTIME_OUTPUT_DIRECTORY_${config} "${CMAKE_SOURCE_DIR}/bin/${PLATARCH}")
+  set (CMAKE_LIBRARY_OUTPUT_DIRECTORY_${config} "${CMAKE_SOURCE_DIR}/bin/${PLATARCH}")
+  set (CMAKE_ARCHIVE_OUTPUT_DIRECTORY_${config} "${CMAKE_SOURCE_DIR}/bin/${PLATARCH}")
 endforeach (config)
 
 file (GLOB HEADERS "include/*.h")
@@ -47,6 +41,10 @@ file (GLOB SOURCES "src/*.cpp")
 add_library (phx SHARED ${SOURCES} ${HEADERS})
 
 target_compile_definitions (phx PRIVATE LIBPHX_BUILDING=1)
+target_include_directories (phx PUBLIC "include")
+target_include_directories (phx PUBLIC "ext/include")
+target_include_directories (phx PUBLIC "ext/include/bullet")
+target_link_directories (phx PUBLIC "ext/lib/${PLATARCH}")
 
 set_target_properties (phx PROPERTIES OUTPUT_NAME_DEBUG "phx${ARCH}d")
 set_target_properties (phx PROPERTIES OUTPUT_NAME_RELEASE "phx${ARCH}r")
