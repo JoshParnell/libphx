@@ -54,17 +54,53 @@ set_target_properties (phx PROPERTIES OUTPUT_NAME_MINSIZEREL "phx${ARCH}rm")
 # ------------------------------------------------------------------------------
 
 if (WINDOWS)
+
+  # register an external shared library
+  function (add_extlib name lib dll)
+    add_library (${name} SHARED IMPORTED GLOBAL)
+    set_property (TARGET ${name} PROPERTY IMPORTED_IMPLIB "${CMAKE_CURRENT_SOURCE_DIR}/ext/lib/${PLATARCH}/${lib}")
+    set_property (TARGET ${name} PROPERTY IMPORTED_LOCATION "${CMAKE_CURRENT_SOURCE_DIR}/ext/lib/${PLATARCH}/${dll}")
+  endfunction ()
+
+  # link target to an external library; also add a post-build step to
+  # copy the library DLL into the bin folder
+  function (target_link_extlib target lib)
+    target_link_libraries (${target} ${lib})
+    add_custom_command (TARGET ${target} POST_BUILD
+      COMMAND ${CMAKE_COMMAND} -E copy_if_different
+      $<TARGET_FILE:${lib}> $<TARGET_FILE_DIR:${target}>
+    )
+  endfunction ()
+
+  add_extlib (glew glew32.lib glew32.dll)
+  add_extlib (lz4 liblz4.lib liblz4.dll)
+  add_extlib (lua51 lua51.lib lua51.dll)
+  add_extlib (sdl2 SDL2.lib SDL2.dll)
+  add_extlib (fmod fmodL_vc.lib fmodL.dll)
+  add_extlib (fmodstudio fmodstudioL_vc.lib fmodstudioL.dll)
+
+elseif (LINUX)
+
+  # TODO
+
+endif ()
+
+# ------------------------------------------------------------------------------
+
+if (WINDOWS)
+
   target_link_libraries (phx
     opengl32.lib
-    glew32.lib
     user32.lib winmm.lib Ws2_32.lib
-    SDL2.lib
-    liblz4.lib
     freetype.lib
-    lua51.lib)
+    BulletCollision.lib BulletDynamics.lib LinearMath.lib)
 
-  target_link_libraries (phx fmodL_vc.lib fmodstudioL_vc.lib)
-  target_link_libraries (phx BulletCollision.lib BulletDynamics.lib LinearMath.lib)
+  target_link_extlib (phx glew)
+  target_link_extlib (phx sdl2)
+  target_link_extlib (phx lz4)
+  target_link_extlib (phx lua51)
+  target_link_extlib (phx fmod)
+  target_link_extlib (phx fmodstudio)
 
   target_compile_definitions (phx PRIVATE _CRT_SECURE_NO_DEPRECATE)
   target_compile_definitions (phx PRIVATE WIN32_LEAN_AND_MEAN)
