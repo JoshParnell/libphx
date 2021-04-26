@@ -1,6 +1,6 @@
 -- Metric ----------------------------------------------------------------------
 local ffi = require('ffi')
-local libphx = require('ffi.libphx')
+local libphx = require('ffi.libphx').lib
 local Metric
 
 do -- C Definitions

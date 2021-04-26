@@ -1,6 +1,6 @@
 -- PointClassification ---------------------------------------------------------
 local ffi = require('ffi')
-local libphx = require('ffi.libphx')
+local libphx = require('ffi.libphx').lib
 local PointClassification
 
 do -- Global Symbol Table

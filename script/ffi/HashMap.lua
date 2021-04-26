@@ -1,6 +1,6 @@
 -- HashMap ---------------------------------------------------------------------
 local ffi = require('ffi')
-local libphx = require('ffi.libphx')
+local libphx = require('ffi.libphx').lib
 local HashMap
 
 do -- C Definitions

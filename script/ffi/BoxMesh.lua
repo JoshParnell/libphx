@@ -1,6 +1,6 @@
 -- BoxMesh ---------------------------------------------------------------------
 local ffi = require('ffi')
-local libphx = require('ffi.libphx')
+local libphx = require('ffi.libphx').lib
 local BoxMesh
 
 do -- C Definitions

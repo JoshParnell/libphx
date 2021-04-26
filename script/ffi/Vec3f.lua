@@ -1,6 +1,6 @@
 -- Vec3f -----------------------------------------------------------------------
 local ffi = require('ffi')
-local libphx = require('ffi.libphx')
+local libphx = require('ffi.libphx').lib
 local Vec3f
 
 do -- Global Symbol Table

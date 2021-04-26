@@ -1,6 +1,6 @@
 -- TimeStamp -------------------------------------------------------------------
 local ffi = require('ffi')
-local libphx = require('ffi.libphx')
+local libphx = require('ffi.libphx').lib
 local TimeStamp
 
 do -- C Definitions

@@ -1,6 +1,6 @@
 -- Tex2D -----------------------------------------------------------------------
 local ffi = require('ffi')
-local libphx = require('ffi.libphx')
+local libphx = require('ffi.libphx').lib
 local Tex2D
 
 do -- C Definitions

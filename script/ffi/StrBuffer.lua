@@ -1,6 +1,6 @@
 -- StrBuffer -------------------------------------------------------------------
 local ffi = require('ffi')
-local libphx = require('ffi.libphx')
+local libphx = require('ffi.libphx').lib
 local StrBuffer
 
 do -- C Definitions

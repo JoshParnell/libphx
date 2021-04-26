@@ -1,6 +1,6 @@
 -- RayCastResult ---------------------------------------------------------------
 local ffi = require('ffi')
-local libphx = require('ffi.libphx')
+local libphx = require('ffi.libphx').lib
 local RayCastResult
 
 do -- Global Symbol Table

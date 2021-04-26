@@ -387,7 +387,7 @@ local function writeBindingsScope (scope)
   local lines = {}
   appendf(lines, [[-- %s %s]], scope.name, string.rep('-', 76 - #scope.name))
   appendf(lines, "local ffi = require('ffi')")
-  appendf(lines, "local %s = require('ffi.%s')", LIBNAME, LIBNAME)
+  appendf(lines, "local %s = require('ffi.%s').lib", LIBNAME, LIBNAME)
   appendf(lines, 'local %s\n', scope.name)
 
   do -- ffi cdefs
@@ -530,7 +530,7 @@ local function writeBindingsInit ()
   local lines = {}
   appendf(lines, "local ffi = require('ffi')")
   appendf(lines, "local jit = require('jit')\n")
-  appendf(lines, "local %s", LIBNAME)
+  appendf(lines, "local %s = {}", LIBNAME)
 
   do -- Typedefs
     appendf(lines, 'do -- Basic Typedefs')
@@ -563,7 +563,7 @@ local function writeBindingsInit ()
     end
     appendf(lines, '  ]]\n')
 
-    if false then -- Opaque List
+    if true then -- Opaque List
       appendf(lines, '  %s.Opaques = {', LIBNAME)
       for _, opaque in ipairs(opaques) do
         appendf(lines, "    '%s',", opaque)
@@ -589,7 +589,7 @@ local function writeBindingsInit ()
     end
     appendf(lines, '  ]]\n')
 
-    if false then -- Transparent List
+    if true then -- Transparent List
       appendf(lines, '  %s.Structs = {', LIBNAME)
       for _, struct in ipairs(structs) do
         if isstruct[struct.name] then
@@ -607,8 +607,8 @@ local function writeBindingsInit ()
     appendf(lines, "  local debug = __debug__ and 'd' or ''")
     appendf(lines, "  local arch = jit.arch == 'x86' and '32' or '64'")
     appendf(lines, "  local path = string.format('%s%%s%%s', arch, debug)", LIBNAME)
-    appendf(lines, '  %s = ffi.load(path, false)', LIBNAME)
-    appendf(lines, "  assert(%s, 'Failed to load %%s', path)", LIBNAME)
+    appendf(lines, '  %s.lib = ffi.load(path, false)', LIBNAME)
+    appendf(lines, "  assert(%s.lib, 'Failed to load %%s', path)", LIBNAME)
     -- appendf(lines, '  _G.%s = %s.lib', LIBNAME, LIBNAME)
     appendf(lines, 'end\n')
   end

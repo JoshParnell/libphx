@@ -1,6 +1,6 @@
 -- Box3d -----------------------------------------------------------------------
 local ffi = require('ffi')
-local libphx = require('ffi.libphx')
+local libphx = require('ffi.libphx').lib
 local Box3d
 
 do -- Global Symbol Table

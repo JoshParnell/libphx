@@ -1,6 +1,6 @@
 -- CollisionGroup --------------------------------------------------------------
 local ffi = require('ffi')
-local libphx = require('ffi.libphx')
+local libphx = require('ffi.libphx').lib
 local CollisionGroup
 
 do -- Global Symbol Table

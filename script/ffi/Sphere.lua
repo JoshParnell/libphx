@@ -1,6 +1,6 @@
 -- Sphere ----------------------------------------------------------------------
 local ffi = require('ffi')
-local libphx = require('ffi.libphx')
+local libphx = require('ffi.libphx').lib
 local Sphere
 
 do -- Global Symbol Table

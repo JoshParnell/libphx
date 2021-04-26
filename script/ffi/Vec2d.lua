@@ -1,6 +1,6 @@
 -- Vec2d -----------------------------------------------------------------------
 local ffi = require('ffi')
-local libphx = require('ffi.libphx')
+local libphx = require('ffi.libphx').lib
 local Vec2d
 
 do -- Global Symbol Table

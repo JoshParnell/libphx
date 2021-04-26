@@ -1,6 +1,6 @@
 -- WindowMode ------------------------------------------------------------------
 local ffi = require('ffi')
-local libphx = require('ffi.libphx')
+local libphx = require('ffi.libphx').lib
 local WindowMode
 
 do -- C Definitions

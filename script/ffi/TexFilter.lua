@@ -1,6 +1,6 @@
 -- TexFilter -------------------------------------------------------------------
 local ffi = require('ffi')
-local libphx = require('ffi.libphx')
+local libphx = require('ffi.libphx').lib
 local TexFilter
 
 do -- C Definitions

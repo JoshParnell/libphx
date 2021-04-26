@@ -1,6 +1,6 @@
 -- BSPDebug --------------------------------------------------------------------
 local ffi = require('ffi')
-local libphx = require('ffi.libphx')
+local libphx = require('ffi.libphx').lib
 local BSPDebug
 
 do -- C Definitions

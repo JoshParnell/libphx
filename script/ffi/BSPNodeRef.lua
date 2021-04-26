@@ -1,6 +1,6 @@
 -- BSPNodeRef ------------------------------------------------------------------
 local ffi = require('ffi')
-local libphx = require('ffi.libphx')
+local libphx = require('ffi.libphx').lib
 local BSPNodeRef
 
 do -- Global Symbol Table

@@ -1,6 +1,6 @@
 -- Bytes -----------------------------------------------------------------------
 local ffi = require('ffi')
-local libphx = require('ffi.libphx')
+local libphx = require('ffi.libphx').lib
 local Bytes
 
 do -- C Definitions

@@ -1,7 +1,7 @@
 local ffi = require('ffi')
 local jit = require('jit')
 
-local libphx
+local libphx = {}
 do -- Basic Typedefs
   ffi.cdef [[
     typedef unsigned long  ulong;
@@ -104,6 +104,48 @@ do -- Opaque Structs
     typedef struct Window       {} Window;
   ]]
 
+  libphx.Opaques = {
+    'BSP',
+    'BoxMesh',
+    'BoxTree',
+    'Bytes',
+    'Directory',
+    'File',
+    'Font',
+    'HashGrid',
+    'HashGridElem',
+    'HashMap',
+    'InputBinding',
+    'KDTree',
+    'LodMesh',
+    'MemPool',
+    'MemStack',
+    'Mesh',
+    'MidiDevice',
+    'Octree',
+    'Physics',
+    'RNG',
+    'RigidBody',
+    'RmGui',
+    'SDF',
+    'Shader',
+    'ShaderState',
+    'Socket',
+    'Sound',
+    'SoundDesc',
+    'StrBuffer',
+    'StrMap',
+    'StrMapIter',
+    'Tex1D',
+    'Tex2D',
+    'Tex3D',
+    'TexCube',
+    'Thread',
+    'ThreadPool',
+    'Timer',
+    'Trigger',
+    'Window',
+  }
 end
 
 do -- Transparent Structs
@@ -324,14 +366,46 @@ do -- Transparent Structs
     } Vertex;
   ]]
 
+  libphx.Structs = {
+    'BSPNodeRef',
+    'Box3d',
+    'Box3f',
+    'Box3i',
+    'Collision',
+    'Device',
+    'InputEvent',
+    'IntersectSphereProfiling',
+    'LineSegment',
+    'Matrix',
+    'Plane',
+    'Polygon',
+    'Quat',
+    'Ray',
+    'RayCastResult',
+    'ShapeCastResult',
+    'Sphere',
+    'Time',
+    'Vec3f',
+    'Triangle',
+    'TriangleTest',
+    'Vec2d',
+    'Vec2f',
+    'Vec2i',
+    'Vec3d',
+    'Vec3i',
+    'Vec4d',
+    'Vec4f',
+    'Vec4i',
+    'Vertex',
+  }
 end
 
 do -- Load Library
   local debug = __debug__ and 'd' or ''
   local arch = jit.arch == 'x86' and '32' or '64'
   local path = string.format('libphx%s%s', arch, debug)
-  libphx = ffi.load(path, false)
-  assert(libphx, 'Failed to load %s', path)
+  libphx.lib = ffi.load(path, false)
+  assert(libphx.lib, 'Failed to load %s', path)
 end
 
 return libphx

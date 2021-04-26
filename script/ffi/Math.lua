@@ -1,6 +1,6 @@
 -- Math ------------------------------------------------------------------------
 local ffi = require('ffi')
-local libphx = require('ffi.libphx')
+local libphx = require('ffi.libphx').lib
 local Math
 
 do -- C Definitions
