@@ -117,7 +117,9 @@ static cstr GLSL_Load (cstr name, Shader* self) {
   void* cached = StrMap_Get(cache, name);
   if (cached)
     return (cstr)cached;
-  cstr code = Resource_LoadCstr(ResourceType_Shader, name);
+  cstr rawCode = Resource_LoadCstr(ResourceType_Shader, name);
+  cstr code = StrReplace(rawCode, "\r\n", "\n");
+  StrFree(rawCode);
   code = GLSL_Preprocess(code, self);
   /* BUG : Disable GLSL caching until preprocessor cache works. */
   // StrMap_Set(cache, name, (void*)code);
