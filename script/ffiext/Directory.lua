@@ -1,3 +1,5 @@
+local libphx = require('ffi.libphx').lib
+
 function onDef_Directory (t, mt)
   local function walkDirectory (path, root, fn, recurse)
     local dir = t.Open(path)

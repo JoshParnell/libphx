@@ -1,3 +1,5 @@
+local libphx = require('ffi.libphx').lib
+
 function onDef_Ray_t (t, mt)
   mt.__index.getPoint = function (self, t) return Vec3f(
     self.px + t * self.dirx,

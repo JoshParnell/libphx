@@ -1,3 +1,5 @@
+local libphx = require('ffi.libphx').lib
+
 function onDef_Input (t, mt)
   t.GetMouseDelta    = function () local v = Vec2i() libphx.Input_GetMouseDelta   (v) return v end
   t.GetMousePosition = function () local v = Vec2i() libphx.Input_GetMousePosition(v) return v end

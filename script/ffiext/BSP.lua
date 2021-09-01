@@ -1,3 +1,5 @@
+local libphx = require('ffi.libphx').lib
+
 function onDef_BSP (t, mt)
   t.Create = function (...)
     local e = libphx.Mesh_Validate(...)

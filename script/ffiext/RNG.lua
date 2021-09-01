@@ -1,3 +1,5 @@
+local libphx = require('ffi.libphx').lib
+
 function onDef_RNG_t (t, mt)
   mt.__index.choose    = function (self, table) return table[libphx.RNG_GetInt(self, 1, #table)] end
   mt.__index.getAxis2  = function (self)       local v = Vec2f() libphx.RNG_GetAxis2(self, v)      return v end
