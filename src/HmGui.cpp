@@ -128,7 +128,7 @@ void HmGui_Begin (float sx, float sy) {
 
     self.style = MemNew(HmGuiStyle);
     self.style->prev = 0;
-    self.style->font = Font_Load("Shentox", 14);
+    self.style->font = Font_Load("Rajdhani", 14);
     self.style->spacing = 6;
 
     self.style->colorPrimary = Vec4f_Create(0.1f, 0.5f, 1.0f, 1.0f);
