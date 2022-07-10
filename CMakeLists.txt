@@ -1,44 +1,15 @@
 cmake_minimum_required (VERSION 3.0.2)
 project (LibPHX)
 set (CMAKE_BUILD_TYPE Release)
-
-if (WIN32)
-  set (PLATFORM "win")
-  set (WINDOWS TRUE)
-elseif (UNIX AND NOT APPLE)
-  set (PLATFORM "linux")
-  set (LINUX TRUE)
-else ()
-  message (FATAL_ERROR "Unsupported Platform")
-endif ()
-
-if ("${CMAKE_SIZEOF_VOID_P}" EQUAL "4")
-  set (ARCH "32")
-elseif ("${CMAKE_SIZEOF_VOID_P}" EQUAL "8")
-  set (ARCH "64")
-else ()
-  message (FATAL_ERROR "Unsupported CPU Architecture")
-endif ()
-
-set (PLATARCH "${PLATFORM}${ARCH}")
+include (script/build/Shared.cmake)
 
 # ------------------------------------------------------------------------------
-
-set (CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/bin/${PLATARCH}")
-set (CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/bin/${PLATARCH}")
-set (CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/bin/${PLATARCH}")
-
-foreach (config ${CMAKE_CONFIGURATION_TYPES})
-  string (TOUPPER ${config} config)
-  set (CMAKE_RUNTIME_OUTPUT_DIRECTORY_${config} "${CMAKE_SOURCE_DIR}/bin/${PLATARCH}")
-  set (CMAKE_LIBRARY_OUTPUT_DIRECTORY_${config} "${CMAKE_SOURCE_DIR}/bin/${PLATARCH}")
-  set (CMAKE_ARCHIVE_OUTPUT_DIRECTORY_${config} "${CMAKE_SOURCE_DIR}/bin/${PLATARCH}")
-endforeach (config)
 
 file (GLOB HEADERS "include/*.h")
 file (GLOB SOURCES "src/*.cpp")
 
 add_library (phx SHARED ${SOURCES} ${HEADERS})
+phx_configure_output_dir (phx)
 
 target_compile_definitions (phx PRIVATE LIBPHX_BUILDING=1)
 target_include_directories (phx PUBLIC "include")
@@ -46,11 +17,12 @@ target_include_directories (phx PUBLIC "ext/include")
 target_include_directories (phx PUBLIC "ext/include/bullet")
 target_link_directories (phx PUBLIC "ext/lib/${PLATARCH}")
 
-set_target_properties (phx PROPERTIES PREFIX "lib")
-set_target_properties (phx PROPERTIES OUTPUT_NAME_DEBUG "phx${ARCH}d")
-set_target_properties (phx PROPERTIES OUTPUT_NAME_RELEASE "phx${ARCH}r")
-set_target_properties (phx PROPERTIES OUTPUT_NAME_RELWITHDEBINFO "phx${ARCH}")
-set_target_properties (phx PROPERTIES OUTPUT_NAME_MINSIZEREL "phx${ARCH}rm")
+set_target_properties (phx PROPERTIES
+  PREFIX "lib"
+  OUTPUT_NAME_DEBUG "phx${ARCH}d"
+  OUTPUT_NAME_RELEASE "phx${ARCH}r"
+  OUTPUT_NAME_RELWITHDEBINFO "phx${ARCH}"
+  OUTPUT_NAME_MINSIZEREL "phx${ARCH}rm")
 
 # ------------------------------------------------------------------------------
 
