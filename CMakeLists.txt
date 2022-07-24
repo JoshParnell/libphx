@@ -10,6 +10,7 @@ file (GLOB SOURCES "src/*.cpp")
 
 add_library (phx SHARED ${SOURCES} ${HEADERS})
 phx_configure_output_dir (phx)
+phx_configure_target_properties (phx)
 
 target_compile_definitions (phx PRIVATE LIBPHX_BUILDING=1)
 target_include_directories (phx PUBLIC "include")
@@ -81,19 +82,6 @@ if (WINDOWS)
   target_link_extlib (phx fmod)
   target_link_extlib (phx fmodstudio)
 
-  target_compile_definitions (phx PRIVATE _CRT_SECURE_NO_DEPRECATE)
-  target_compile_definitions (phx PRIVATE WIN32_LEAN_AND_MEAN)
-  target_compile_definitions (phx PRIVATE WINDOWS=1)
-
-  target_compile_options (phx PRIVATE "/MP")         # Multithreaded Build
-  target_compile_options (phx PRIVATE "/MD")         # Dynamic C Runtime
-  target_compile_options (phx PRIVATE "/EHs-c-")     # No exception handling
-  target_compile_options (phx PRIVATE "/fp:fast")    # No strict FP
-  target_compile_options (phx PRIVATE "/GL")         # Whole Program Optimization
-  target_compile_options (phx PRIVATE "/GS-")        # No Buffer Security Checks
-  target_compile_options (phx PRIVATE "/GR-")        # No RTTI
-  target_compile_options (phx PRIVATE "/arch:SSE2")  # Assume SSE2+
-
 elseif (LINUX)
 
   target_link_libraries (phx
@@ -106,26 +94,6 @@ elseif (LINUX)
     lz4
     fmod fmodstudio
     BulletCollision BulletDynamics)
-
-  target_compile_definitions (phx PRIVATE UNIX=1)
-
-  target_compile_options (phx PRIVATE "-Wall")            # All error checking
-  target_compile_options (phx PRIVATE "-fno-exceptions")  # No exception handling
-  target_compile_options (phx PRIVATE "-ffast-math")      # No strict FP
-  target_compile_options (phx PRIVATE "-fpic")            # PIC since this is shared
-
-  target_compile_options (phx PRIVATE "-Wno-unused-variable")
-  target_compile_options (phx PRIVATE "-Wno-unknown-pragmas")
-
-  # Aggressive optimization, assuming SSE4+
-  target_compile_options (phx PRIVATE "-O3")
-  target_compile_options (phx PRIVATE "-msse")
-  target_compile_options (phx PRIVATE "-msse2")
-  target_compile_options (phx PRIVATE "-msse3")
-  target_compile_options (phx PRIVATE "-msse4")
-
-  # :(
-  target_compile_options (phx PRIVATE "-std=c++11")
 
   # Add ext/lib/{$PLATARCH} to runtime library search path
   target_link_options (phx PRIVATE "-Wl,-rpath,../ext/lib/${PLATARCH}")
